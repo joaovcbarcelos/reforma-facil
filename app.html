@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Reforma Fácil mudou de endereço</title>
+<link rel="canonical" href="https://reformafacil.github.io/">
+<script>
+  // leva para o mesmo caminho no endereço novo (ex.: /reforma-facil/app.html → /app.html)
+  (function () {
+    var resto = location.pathname.replace(/^\/reforma-facil\/?/, '');
+    var destino = 'https://reformafacil.github.io/' + resto + location.search + location.hash;
+    // remove o app antigo guardado no aparelho (service worker) para não voltar a abrir a versão velha
+    var ir = function () { location.replace(destino); };
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (rs) { return Promise.all(rs.map(function (r) { return r.unregister(); })); })
+        .then(function () { return window.caches ? caches.keys().then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); }) : null; })
+        .then(ir, ir);
+      setTimeout(ir, 1500);
+    } else { ir(); }
+  })();
+</script>
+<style>body{font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#0b0c14;color:#f2f3fa;text-align:center;padding:20px}a{color:#8b7dff;font-weight:700}</style>
+</head>
+<body>
+  <div><h1 style="font-size:22px">O Reforma Fácil mudou de endereço</h1>
+  <p>Agora estamos em <a href="https://reformafacil.github.io/">reformafacil.github.io</a>. Redirecionando…</p></div>
+</body>
+</html>
